@@ -17,3 +17,18 @@ export async function create(req: Request, res: Response ){
   }
 
 };
+
+export async function upvote(req: Request, res: Response){
+  const id = Number(req.params.id);
+  try{
+    const result = await recommendatioService.upvote(id);
+    if(result === false) res.sendStatus(404);
+  
+    res.sendStatus(200);
+  }catch(err){
+    console.log(err);
+    res.sendStatus(500);
+  }
+
+
+}
