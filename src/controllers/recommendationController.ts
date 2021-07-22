@@ -20,6 +20,8 @@ export async function create(req: Request, res: Response ){
 
 export async function upvote(req: Request, res: Response){
   const id = Number(req.params.id);
+  if(!id) return res.sendStatus(400);
+  
   try{
     const result = await recommendatioService.upvote(id);
     if(result === false) res.sendStatus(404);
