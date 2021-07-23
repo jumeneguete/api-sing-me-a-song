@@ -45,3 +45,11 @@ describe ("POST /genres", () => {
     });
 
 });
+
+describe("GET /genres", () => {
+    it("should return status 200 when get all genres from database", async () => {
+        const response = await agent.get("/genres");
+
+        expect(response.status).toBe(200);
+    });
+});

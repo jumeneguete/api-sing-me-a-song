@@ -8,3 +8,7 @@ export async function addGenre(genre: string){
     return await genresRepository.addGenre(name);
 
 }
+
+export async function getGenre(){
+   return await genresRepository.getGenres();
+}
