@@ -135,3 +135,43 @@ describe("POST /recommendations/:id/downvote", () => {
 
 });
 
+describe("GET /recommendations/random", () => {
+
+  it("should return status 200 when get a random  high scored or low scored song from database", async () => {
+    await connection.query(`INSERT INTO songs (name, "youtubeLink", score) VALUES ('teste', 'teste', 2)`);
+    await connection.query(`INSERT INTO songs (name, "youtubeLink", score) VALUES ('teste', 'teste', 20)`);
+
+    const response = await agent.get(`/recommendations/random`);
+
+    expect(response.status).toBe(200);
+  });
+
+  it("should return status 200 when get a random  song of all songs from database with only high scored songs", async () => {
+    await connection.query(`INSERT INTO songs (name, "youtubeLink", score) VALUES ('teste', 'teste', 10)`);
+    await connection.query(`INSERT INTO songs (name, "youtubeLink", score) VALUES ('teste', 'teste', 20)`);
+
+    const response = await agent.get(`/recommendations/random`);
+
+    expect(response.status).toBe(200);
+  });
+
+  it("should return status 200 when get a random  song of all songs from database with only low scored songs", async () => {
+    await connection.query(`INSERT INTO songs (name, "youtubeLink", score) VALUES ('teste', 'teste', -2)`);
+    await connection.query(`INSERT INTO songs (name, "youtubeLink", score) VALUES ('teste', 'teste', 0)`);
+
+    const response = await agent.get(`/recommendations/random`);
+
+    expect(response.status).toBe(200);
+  });
+
+
+  it("should return status 404 when database is empty", async () => {
+
+    const response = await agent.get(`/recommendations/random`);
+
+    expect(response.status).toBe(404);
+  });
+
+});
+
+

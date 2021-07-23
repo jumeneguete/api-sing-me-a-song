@@ -19,3 +19,18 @@ export async function exclude(id: number){
 
    await connection.query(`DELETE FROM songs WHERE id = $1`, [id]);
 }
+
+export async function anySongOrdered(){
+   const result = await connection.query(`SELECT * FROM songs ORDER BY score DESC`);
+   return result.rows;
+}
+
+export async function songsHighScore(){
+   const result = await connection.query(`SELECT * FROM songs WHERE score > 10`);
+   return result.rows;
+}
+
+export async function songsLowScore(){
+   const result = await connection.query(`SELECT * FROM songs WHERE score <= 10`);
+   return result.rows;
+}
