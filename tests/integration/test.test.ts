@@ -1,12 +1,12 @@
 import "../../src/setup.ts";
 import supertest from "supertest";
 import app from "../../src/app";
-import { cleanDatabase, endDBConnection } from "../database/database";
+import { cleanDatabaseRec, endDBConnection } from "../database/database";
 import { insertRecommendation, insertScore } from "../factories/insertSong";
 import { updateRecommendation } from "../factories/updateSong";
 import faker from "faker/locale/pt_BR"
 
-beforeEach(cleanDatabase);
+beforeEach(cleanDatabaseRec);
 afterAll(endDBConnection);
 const agent = supertest(app);
 
