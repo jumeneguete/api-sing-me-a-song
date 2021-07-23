@@ -65,11 +65,11 @@ export async function getSong(req: Request, res: Response){
 
 export async function getTopSongs(req: Request, res: Response){
   try{
-    const amount = Number(req.params.amount);
+    const amount = Math.abs(Number(req.params.amount));
     if(!amount) return res.sendStatus(400);
 
     const result = await recommendatioService.topSongs(amount);
-    if(!result) return res.sendStatus(400);
+    if(!result) return res.sendStatus(404);
 
     return res.status(200).send(result);
 

@@ -174,4 +174,44 @@ describe("GET /recommendations/random", () => {
 
 });
 
+describe("GET /recommendations/top/:amount", () => {
+
+  it("should return status 200 when get a valid param", async () => {
+    await connection.query(`INSERT INTO songs (name, "youtubeLink", score) VALUES ('teste', 'teste', 2)`);
+    await connection.query(`INSERT INTO songs (name, "youtubeLink", score) VALUES ('teste', 'teste', 12)`);
+    await connection.query(`INSERT INTO songs (name, "youtubeLink", score) VALUES ('teste', 'teste', 20)`);
+
+    const response = await agent.get(`/recommendations/top/2`);
+
+    expect(response.status).toBe(200);
+  });
+
+  it("should return status 400 for invalid param", async () => {
+    const param = "string"
+
+    const response = await agent.get(`/recommendations/top/${param}`);
+
+    expect(response.status).toBe(400);
+  });
+
+  it("should return status 200 for nagtive param", async () => {
+    await connection.query(`INSERT INTO songs (name, "youtubeLink", score) VALUES ('teste', 'teste', 2)`);
+    await connection.query(`INSERT INTO songs (name, "youtubeLink", score) VALUES ('teste', 'teste', 12)`);
+    await connection.query(`INSERT INTO songs (name, "youtubeLink", score) VALUES ('teste', 'teste', 20)`);
+    const param = -2;
+
+    const response = await agent.get(`/recommendations/top/${param}`);
+
+    expect(response.status).toBe(200);
+  });
+
+  it("should return status 404 when database is empty", async () => {
+
+    const response = await agent.get(`/recommendations/top/2`);
+
+    expect(response.status).toBe(404);
+  });
+
+});
+
 
