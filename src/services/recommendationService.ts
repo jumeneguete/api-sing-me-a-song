@@ -1,4 +1,5 @@
 import * as recommendationRepository from "../repositories/recommendationReposiyory";
+import { isYoutubeVideo, randomNumber } from "./utils/util";
 
 export async function create(name: string , link: string){
     const validLink = isYoutubeVideo(link);
@@ -11,20 +12,20 @@ export async function create(name: string , link: string){
 
 export async function upvote(id: number){
 
-    const register = await recommendationRepository.findSong(id);
+    const register = await recommendationRepository.findSongById(id);
     if(register.length === 0) return false;
 
     const score: number = register[0].score + 1;
-    await recommendationRepository.addVote(id, score);
+    await recommendationRepository.vote(id, score);
 };
 
 export async function downvote(id: number){
 
-    const register = await recommendationRepository.findSong(id);
+    const register = await recommendationRepository.findSongById(id);
     if(register.length === 0) return false;
 
     const score: number = register[0].score - 1;
-    const newRegister = await recommendationRepository.addVote(id, score);
+    const newRegister = await recommendationRepository.vote(id, score);
 
     if (newRegister.score <= (-5)){
         await recommendationRepository.exclude(id);
@@ -40,7 +41,7 @@ export async function getSong(){
 
  if (allSongs.length === 0){
      return null;
- } else if (!highScore || !lowScore){
+ } else if (highScore.length===0 || lowScore.length===0){
         const random = randomNumber(allSongs);
         return allSongs[random];
     } else if (percentage <= 0.7){
@@ -67,13 +68,3 @@ export async function topSongs(amount:number){
 
     return result;  
 };
-
-function isYoutubeVideo(url: string) {
-  var v = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
-  return (url.match(v)) ? RegExp.$1 : false;
-}
-
-function randomNumber(array: any[]){
-        const quantity: number = array.length-1;
-        return Math.floor(Math.random() * quantity);
-}
