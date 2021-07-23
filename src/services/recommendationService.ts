@@ -12,10 +12,24 @@ export async function create(name: string , link: string){
 export async function upvote(id: number){
 
     const register = await recommendationRepository.findSong(id);
-    if(register.rows.length === 0) return false;
-    const score: number = register.rows[0].score + 1;
+    if(register.length === 0) return false;
 
+    const score: number = register[0].score + 1;
     await recommendationRepository.addVote(id, score);
+}
+
+export async function downvote(id: number){
+
+    const register = await recommendationRepository.findSong(id);
+    if(register.length === 0) return false;
+
+    const score: number = register[0].score - 1;
+    const newRegister = await recommendationRepository.addVote(id, score);
+
+    if (newRegister.score <= (-5)){
+        await recommendationRepository.exclude(id);
+        return "excluded";
+    }
 }
 
 function isYoutubeVideo(url: string) {

@@ -5,11 +5,17 @@ export async function addRecommendation(name: string, link: string){
 }
 
 export async function findSong(id: number){
-   return await connection.query(`SELECT * FROM songs WHERE id=$1`, [id]);
+   const result =  await connection.query(`SELECT * FROM songs WHERE id=$1`, [id]);
+   return result.rows;
 }
 
 export async function addVote(id: number, score:number){
 
-   await connection.query(`UPDATE songs SET score = $1 WHERE id= $2`, [score, id]);
+   const result = await connection.query(`UPDATE songs SET score = $1 WHERE id= $2 RETURNING *`, [score, id]);
+   return result.rows[0];
+}
 
+export async function exclude(id: number){
+
+   await connection.query(`DELETE FROM songs WHERE id = $1`, [id]);
 }

@@ -8,5 +8,6 @@ app.use(express.json());
 
 app.post("/recommendations", recommendationController.create);
 app.post("/recommendations/:id/upvote", recommendationController.upvote);
+app.post("/recommendations/:id/downvote", recommendationController.downvote);
 
 export default app;

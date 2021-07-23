@@ -20,17 +20,31 @@ export async function create(req: Request, res: Response ){
 
 export async function upvote(req: Request, res: Response){
   const id = Number(req.params.id);
-  if(!id) return res.sendStatus(400);
-  
+  if(!id ) return res.sendStatus(400);
+
   try{
-    const result = await recommendatioService.upvote(id);
-    if(result === false) res.sendStatus(404);
+    const register = await recommendatioService.upvote(id);
+    if(register === false) return res.sendStatus(404);
   
     res.sendStatus(200);
   }catch(err){
     console.log(err);
     res.sendStatus(500);
   }
+}
 
+export async function downvote(req: Request, res: Response){
+  const id = Number(req.params.id);
+  if(!id ) return res.sendStatus(400);
 
+  try{
+    const register = await recommendatioService.downvote(id);
+    if(register === false) return res.sendStatus(404);
+    if(register === "excluded") return res.sendStatus(410);
+  
+    res.sendStatus(200);
+  }catch(err){
+    console.log(err);
+    res.sendStatus(500);
+  }
 }
