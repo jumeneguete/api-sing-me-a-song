@@ -1,4 +1,6 @@
 import * as recommendationRepository from "../repositories/recommendationReposiyory";
+import { Song } from "../repositories/recommendationReposiyory";
+import * as genresRepository from "../repositories/genresRepository";
 import { isYoutubeVideo, randomNumber } from "./utils/util";
 
 export async function create(name: string , link: string){
@@ -15,7 +17,7 @@ export async function upvote(id: number){
     const register = await recommendationRepository.findSongById(id);
     if(register.length === 0) return false;
 
-    const score: number = register[0].score + 1;
+    const score = register[0].score + 1;
     await recommendationRepository.vote(id, score);
 };
 
@@ -24,7 +26,7 @@ export async function downvote(id: number){
     const register = await recommendationRepository.findSongById(id);
     if(register.length === 0) return false;
 
-    const score: number = register[0].score - 1;
+    const score = register[0].score - 1;
     const newRegister = await recommendationRepository.vote(id, score);
 
     if (newRegister.score <= (-5)){
@@ -55,7 +57,7 @@ export async function getSong(){
 
 export async function topSongs(amount:number){
     const songs = await recommendationRepository.anySongOrdered();
-    const result: any[] = [];
+    const result: recommendationRepository.Song[] = [];
 
     if(songs.length===0) return null;
 

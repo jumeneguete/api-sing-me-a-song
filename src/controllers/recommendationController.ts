@@ -1,10 +1,14 @@
 import { Request, Response } from 'express';
-import connection from '../database';
 import * as recommendatioService from "../services/recommendationService";
+
+interface Body {
+  name: string,
+  youtubeLink: string
+}
 
 export async function create(req: Request, res: Response ){
   try{
-    const { name , youtubeLink } = req.body;
+    const { name , youtubeLink } : Body = req.body;
     if(!name || !youtubeLink) return res.sendStatus(400);
   
     const result = await recommendatioService.create(name, youtubeLink);

@@ -5,7 +5,8 @@ export async function addGenre(genre: string){
     const genres = await genresRepository.getGenreByName(name);
     if( genres.length !== 0 ) return null;
 
-    return await genresRepository.addGenre(name);
+    const result = await genresRepository.addGenre(name);
+    return result;
 
 }
 
