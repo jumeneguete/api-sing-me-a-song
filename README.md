@@ -1,4 +1,4 @@
-<h1 align="center">🎶 Sing Me a Song 🎵</h1>
+<h1 align="center">🎶 Sing Me a Song </h1>
 
 Sing me a song is an API to recommend songs anonymously.<br>
 The more people like a recommendation, the more likely it is to be recommended to others. 
@@ -6,7 +6,7 @@ The more people like a recommendation, the more likely it is to be recommended t
 
 ### 🔹🔹About
 
-This is the API that works with an application where people can send an old exam and search for old exams by teacher or by subject. Below are the implemented features:
+This is the API that works with an application where user can recommend a song anonymously and they can search for recommended songs. Below are the implemented features:
 
 - Adds a new music recommendation ***(/recommendations)***;
 - Adds a point to recommendation score ***(/recommendations/:id/upvote)***;
@@ -32,7 +32,7 @@ This is the API that works with an application where people can send an old exam
 On this project I was training Typescript for the very first time. <br>
 It was very challenging, but the final result is great. <br>
 ➔ Next step here is to add routes that select and recommend songs by genre. <br>
-➔ Also, I will fix fix integration tests adding tests for expected arrays. <br>
+➔ Also, I will fix fix integration tests adding tests for expected arrays when the route responds one. <br>
 
 ### 🔹🔹How to run
 
