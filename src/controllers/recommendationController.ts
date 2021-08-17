@@ -58,6 +58,7 @@ export async function getSong(req: Request, res: Response){
   try{
     const result = await recommendatioService.getSong();
     if(!result) return res.sendStatus(404);
+    //delete result.genresIds; 
 
     return res.status(200).send(result);
 
@@ -74,6 +75,7 @@ export async function getTopSongs(req: Request, res: Response){
 
     const result = await recommendatioService.topSongs(amount);
     if(!result) return res.sendStatus(404);
+    //result.map(item => delete item.genresIds);
 
     return res.status(200).send(result);
 
