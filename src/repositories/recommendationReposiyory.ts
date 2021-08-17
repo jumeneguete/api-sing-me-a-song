@@ -1,18 +1,29 @@
 import connection from "../database"
 
-export async function addRecommendation(name: string, link: string){
-   return await connection.query(`INSERT INTO songs (name, "youtubeLink") VALUES ($1, $2) RETURNING *`, [name,link]);
+export interface Song {
+   id: number,
+   name: string,
+   youtubeLink: string,
+   score: number
 }
 
-export async function findSongById(id: number){
+export async function addRecommendation(name: string, link: string) : Promise<Song>{
+   const result = await connection.query(`INSERT INTO songs (name, "youtubeLink") VALUES ($1, $2) RETURNING *`, [name,link]);
+   const song : Song = result.rows[0];
+   return song;
+}
+
+export async function findSongById(id: number) : Promise<Song[]> {
    const result =  await connection.query(`SELECT * FROM songs WHERE id=$1`, [id]);
-   return result.rows;
+   const songs : Song[] = result.rows;
+   return songs;
 }
 
-export async function vote(id: number, score:number){
+export async function vote(id: number, score:number): Promise<Song> {
 
    const result = await connection.query(`UPDATE songs SET score = $1 WHERE id= $2 RETURNING *`, [score, id]);
-   return result.rows[0];
+   const song : Song = result.rows[0];
+   return song;
 }
 
 export async function exclude(id: number){
@@ -20,17 +31,20 @@ export async function exclude(id: number){
    await connection.query(`DELETE FROM songs WHERE id = $1`, [id]);
 }
 
-export async function anySongOrdered(){
+export async function anySongOrdered(): Promise<Song[]> {
    const result = await connection.query(`SELECT * FROM songs ORDER BY score DESC`);
-   return result.rows;
+   const songs : Song[] = result.rows;
+   return songs;
 }
 
-export async function songsHighScore(){
+export async function songsHighScore(): Promise<Song[]> {
    const result = await connection.query(`SELECT * FROM songs WHERE score > 10`);
-   return result.rows;
+   const songs : Song[] = result.rows;
+   return songs;
 }
 
-export async function songsLowScore(){
+export async function songsLowScore(): Promise<Song[]> {
    const result = await connection.query(`SELECT * FROM songs WHERE score <= 10`);
-   return result.rows;
+   const songs : Song[] = result.rows;
+   return songs;
 }

@@ -1,10 +1,14 @@
 import { Request, Response } from 'express';
-import connection from '../database';
 import * as recommendatioService from "../services/recommendationService";
+
+interface Body {
+  name: string,
+  youtubeLink: string
+}
 
 export async function create(req: Request, res: Response ){
   try{
-    const { name , youtubeLink } = req.body;
+    const { name , youtubeLink } : Body = req.body;
     if(!name || !youtubeLink) return res.sendStatus(400);
   
     const result = await recommendatioService.create(name, youtubeLink);
@@ -54,6 +58,7 @@ export async function getSong(req: Request, res: Response){
   try{
     const result = await recommendatioService.getSong();
     if(!result) return res.sendStatus(404);
+    //delete result.genresIds; 
 
     return res.status(200).send(result);
 
@@ -70,6 +75,7 @@ export async function getTopSongs(req: Request, res: Response){
 
     const result = await recommendatioService.topSongs(amount);
     if(!result) return res.sendStatus(404);
+    //result.map(item => delete item.genresIds);
 
     return res.status(200).send(result);
 
